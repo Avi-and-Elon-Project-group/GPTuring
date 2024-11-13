@@ -1,0 +1,362 @@
+<!-- feedback.html -->
+
+{% extends 'base.html' %}
+
+{% block title %}feedback{% endblock %}
+
+{% block content %}
+<!--<!DOCTYPE html>-->
+<html>
+
+<head>
+    <title>Turing Test Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+        }
+
+        select,
+        textarea,
+        input[type="range"] {
+            display: block;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.8em;
+        }
+
+        input[type="submit"] {
+            display: block;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .form-sections {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-sections>div {
+            width: 50%;
+        }
+    </style>
+</head>
+
+<form action="/thank_you" method="post">
+    <h2>Feedback Form</h2>
+    <input type="hidden" name="room_code" value="{{ room_code }}">
+    <div class="form-sections">
+        <div>
+            <label for="identityA">Who do you think <span style="font-weight: bold; color: #007BFF;">Candidate A</span> was?</label>
+            <select id="identityA" name="identityA" required>
+                <option value="">Select...</option>
+                <option value="human">Human</option>
+                <option value="bot">Bot</option>
+            </select>
+
+            <div id="bot_questionsA" style="display: none;">
+                <label for="bot_reasonA">What made you believe you were talking to a bot?</label>
+                <textarea id="bot_reasonA" name="bot_reasonA"></textarea>
+
+                <label for="bot_momentA">Were there any moments during the interaction that made you doubt your initial judgment? If yes, please describe.</label>
+                <textarea id="bot_momentA" name="bot_momentA"></textarea>
+
+                <label for="bot_ratingA">The responses from Participant A seemed natural and human-like.
+                    <br>1 for Very unnatural conversation
+                    <br>5 for Very natural and human-like conversation
+                </label>
+                <input type="range" id="bot_ratingA" name="bot_ratingA" min="1" max="5">
+                <div class="range-labels">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                </div>
+
+                <label for="bot_improvementA">What could the bot do to seem more human?</label>
+                <textarea id="bot_improvementA" name="bot_improvementA"></textarea>
+            </div>
+
+            <div id="human_questionsA" style="display: none;">
+                <label for="human_reasonA">What made you believe you were talking to a human?</label>
+                <textarea id="human_reasonA" name="human_reasonA"></textarea>
+
+                <label for="human_momentA">Were there any moments during the interaction that made you doubt your initial judgment? If yes, please describe.</label>
+                <textarea id="human_momentA" name="human_momentA"></textarea>
+
+                <label for="human_ratingA">The responses from Participant A seemed natural and human-like.
+                    <br>1 for Very unnatural conversation
+                    <br>5 for Very natural and human-like conversation
+                </label>
+                <input type="range" id="human_ratingA" name="human_ratingA" min="1" max="5">
+                <div class="range-labels">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label id="identityB_label" for="identityB">Who do you think <span style="font-weight: bold; color: #007BFF;">Candidate B</span> was?</label>
+            <select id="identityB" name="identityB" required>
+                <option value="">Select...</option>
+                <option value="human">Human</option>
+                <option value="bot">Bot</option>
+            </select>
+
+            <div id="bot_questionsB" style="display: none;">
+                <label for="bot_reasonB">What made you believe you were talking to a bot?</label>
+                <textarea id="bot_reasonB" name="bot_reasonB"></textarea>
+
+                <label for="bot_momentB">Were there any moments during the interaction that made you doubt your initial judgment? If yes, please describe.</label>
+                <textarea id="bot_momentB" name="bot_momentB"></textarea>
+
+                <label for="bot_ratingB">The responses from Participant B seemed natural and human-like.
+                    <br>1 for Very unnatural conversation
+                    <br>5 for Very natural and human-like conversation
+                </label>
+                <input type="range" id="bot_ratingB" name="bot_ratingB" min="1" max="5">
+                <div class="range-labels">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                </div>
+
+                <label for="bot_improvementB">What could the bot do to seem more human?</label>
+                <textarea id="bot_improvementB" name="bot_improvementB"></textarea>
+            </div>
+
+            <div id="human_questionsB" style="display: none;">
+                <label for="human_reasonB">What made you believe you were talking to a human?</label>
+                <textarea id="human_reasonB" name="human_reasonB"></textarea>
+
+                <label for="human_momentB">Were there any moments during the interaction that made you doubt your initial judgment? If yes, please describe.</label>
+                <textarea id="human_momentB" name="human_momentB"></textarea>
+
+                <label for="human_ratingB">The responses from Participant B seemed natural and human-like.
+                    <br>1 for Very unnatural conversation
+                    <br>5 for Very natural and human-like conversation
+                </label>
+                <input type="range" id="human_ratingB" name="human_ratingB" min="1" max="5">
+                <div class="range-labels">
+                    <span>1</span>
+                    <span>2</span>
+                    <span>3</span>
+                    <span>4</span>
+                    <span>5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="demographics" style="display: none;">
+        <h3>Demographics</h3>
+        <p>To help us analyze the results, please provide the following information:</p>
+        <label for="age">a) Age range:</label><br>
+        <input type="radio" id="age1" name="age" value="18-24"> 18-24<br>
+        <input type="radio" id="age2" name="age" value="25-34"> 25-34<br>
+        <input type="radio" id="age3" name="age" value="35-44"> 35-44<br>
+        <input type="radio" id="age4" name="age" value="45-54"> 45-54<br>
+        <input type="radio" id="age5" name="age" value="55-64"> 55-64<br>
+        <input type="radio" id="age6" name="age" value="65+"> 65+<br>
+
+        <label for="gender">b) Gender:</label><br>
+        <input type="radio" id="male" name="gender" value="Male"> Male<br>
+        <input type="radio" id="female" name="gender" value="Female"> Female<br>
+        <input type="radio" id="genderOtherButton" name="gender" value="Other"> Other<br>
+
+        <label for="education">c) Highest level of education completed:</label><br>
+        <input type="radio" id="education1" name="education" value="High school or equivalent"> High school or equivalent<br>
+        <input type="radio" id="education2" name="education" value="Some college"> Some college<br>
+        <input type="radio" id="education3" name="education" value="Associate's degree"> Associate's degree<br>
+        <input type="radio" id="education4" name="education" value="Bachelor's degree"> Bachelor's degree<br>
+        <input type="radio" id="education5" name="education" value="Master's degree"> Master's degree<br>
+        <input type="radio" id="education6" name="education" value="Doctoral degree"> Doctoral degree<br>
+        <input type="radio" id="education7" name="education" value="Professional degree"> Professional degree<br>
+        <input type="radio" id="educationOtherButton" name="education" value="Other"> Other<br>
+
+        <label for="ai_interaction">f) How often do you interact with AI or chatbots?</label><br>
+        <input type="radio" id="daily" name="ai_interaction" value="Daily"> Daily<br>
+        <input type="radio" id="weekly" name="ai_interaction" value="Weekly"> Weekly<br>
+        <input type="radio" id="monthly" name="ai_interaction" value="Monthly"> Monthly<br>
+        <input type="radio" id="rarely" name="ai_interaction" value="Rarely"> Rarely<br>
+        <input type="radio" id="never" name="ai_interaction" value="Never"> Never<br>
+
+        <label for="language">g) Primary language:</label><br>
+        <input type="text" id="language" name="language"><br>
+
+        <label for="country">h) Country of residence:</label><br>
+        <input type="text" id="country" name="country"><br>
+
+        <label for="turing_test">j) Have you participated in Turing tests before?</label><br>
+        <input type="radio" id="yes" name="turing_test" value="Yes"> Yes<br>
+        <input type="radio" id="no" name="turing_test" value="No"> No<br>
+        <input type="radio" id="not_sure" name="turing_test" value="Not sure"> Not sure<br>
+    </div>
+
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    const humanQuestionsA = document.getElementById('human_questionsA');
+    const botQuestionsA = document.getElementById('bot_questionsA');
+    const humanQuestionsB = document.getElementById('human_questionsB');
+    const botQuestionsB = document.getElementById('bot_questionsB');
+    const identityB = document.getElementById('identityB');
+    const identityA = document.getElementById('identityA');
+    const identityB_label = document.getElementById('identityB_label');
+    const submitButton = document.querySelector('input[type="submit"]');
+    const demographics = document.getElementById('demographics');
+    const genderOtherButton = document.getElementById('genderOtherButton');
+    const genderOther = document.getElementById('genderOther');
+    const educationOtherButton = document.getElementById('educationOtherButton');
+    const educationOther = document.getElementById('educationOther');
+
+    humanQuestionsA.style.display = 'none';
+    botQuestionsA.style.display = 'none';
+    humanQuestionsB.style.display = 'none';
+    botQuestionsB.style.display = 'none';
+    identityB.style.display = 'none';
+    identityB_label.style.display = 'none';
+    demographics.style.display = 'none';
+    submitButton.disabled = true; // Initially disable the submit button
+
+    const clearFields = (questionType) => {
+        const fields = questionType.querySelectorAll('textarea, input[type="range"]');
+        fields.forEach(field => field.value = '');
+    };
+
+    const checkAllFieldsFilled = () => {
+        let allFilled = true;
+
+        const identityAValue = identityA.value;
+        const identityBValue = identityB.value;
+
+        if (identityAValue === 'human') {
+            if (document.getElementById('human_reasonA').value.trim() === '' ||
+                document.getElementById('human_momentA').value.trim() === '' ||
+                !document.getElementById('human_ratingA').value) {
+                allFilled = false;
+            }
+        } else if (identityAValue === 'bot') {
+            if (document.getElementById('bot_reasonA').value.trim() === '' ||
+                document.getElementById('bot_momentA').value.trim() === '' ||
+                !document.getElementById('bot_ratingA').value ||
+                document.getElementById('bot_improvementA').value.trim() === '') {
+                allFilled = false;
+            }
+        }
+
+        if (identityBValue === 'human') {
+            if (document.getElementById('human_reasonB').value.trim() === '' ||
+                document.getElementById('human_momentB').value.trim() === '' ||
+                !document.getElementById('human_ratingB').value) {
+                allFilled = false;
+            }
+        } else if (identityBValue === 'bot') {
+            if (document.getElementById('bot_reasonB').value.trim() === '' ||
+                document.getElementById('bot_momentB').value.trim() === '' ||
+                !document.getElementById('bot_ratingB').value ||
+                document.getElementById('bot_improvementB').value.trim() === '') {
+                allFilled = false;
+            }
+        }
+
+        // Check demographic fields
+        if (!document.querySelector('input[name="age"]:checked') ||
+            !document.querySelector('input[name="gender"]:checked') ||
+            !document.querySelector('input[name="education"]:checked') ||
+            !document.querySelector('input[name="ai_interaction"]:checked') ||
+            document.getElementById('language').value.trim() === '' ||
+            document.getElementById('country').value.trim() === '' ||
+            !document.querySelector('input[name="turing_test"]:checked')) {
+            allFilled = false;
+        }
+
+        submitButton.disabled = !allFilled;
+    };
+
+    identityA.addEventListener('change', function () {
+        clearFields(humanQuestionsA);
+        clearFields(botQuestionsA);
+        humanQuestionsA.style.display = 'none';
+        botQuestionsA.style.display = 'none';
+
+        if (this.value === 'human') {
+            humanQuestionsA.style.display = 'block';
+            identityB.value = 'bot';
+            clearFields(botQuestionsB);
+            botQuestionsB.style.display = 'block';
+            humanQuestionsB.style.display = 'none';
+        } else if (this.value === 'bot') {
+            botQuestionsA.style.display = 'block';
+            identityB.value = 'human';
+            clearFields(humanQuestionsB);
+            humanQuestionsB.style.display = 'block';
+            botQuestionsB.style.display = 'none';
+        } else {
+            identityB.value = '';
+            clearFields(humanQuestionsB);
+            clearFields(botQuestionsB);
+            humanQuestionsB.style.display = 'none';
+            botQuestionsB.style.display = 'none';
+        }
+
+        identityB.disabled = false;
+        identityB_label.style.display = 'block';
+        identityB.style.display = 'block';
+        demographics.style.display = 'block'; // Show demographics section
+
+        checkAllFieldsFilled();
+    });
+
+    document.querySelectorAll('textarea, input[type="range"], input[name="age"], input[name="gender"], input[name="education"], input[name="ai_interaction"], input[name="turing_test"]').forEach(element => {
+        element.addEventListener('input', checkAllFieldsFilled);
+    });
+
+    document.getElementById('language').addEventListener('input', checkAllFieldsFilled);
+    document.getElementById('country').addEventListener('input', checkAllFieldsFilled);
+
+    genderOtherButton.addEventListener('click', function () {
+        genderOther.style.display = 'inline';
+    });
+
+    educationOtherButton.addEventListener('click', function () {
+        educationOther.style.display = 'inline';
+    });
+</script>
+
+</html>
+{% endblock %}

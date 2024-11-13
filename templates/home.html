@@ -1,0 +1,67 @@
+<!-- This HTML file is for the home page of the site like: users' names -->
+{% extends 'base.html' %}
+{% block content %}
+<html>
+
+<head>
+    <title>Turing Test Feedback Form</title>
+    <style>
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #welcome-text {
+            font-family: 'Georgia', serif;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 1000px;
+            padding: 20px
+        }
+    </style>
+</head>
+
+<body>
+    <div id="home-container">
+        <h1 id="home-header">AI Chat Experiment</h1>
+
+        <!--    <a href="info"> &lt;!&ndash; not necessary &ndash;&gt;-->
+        <!--        <button id="send-btn" name="home page">Experiment information page</button>-->
+        <!--    </a>-->
+        <form method="post" id="chat-widget-home">
+            <div id="name-input">
+                <input type="text" id="name" name="name" placeholder="Enter your name here" value="{{name}}"
+                    oninput="validateInput(this)" />
+            </div>
+            <div>
+                <button type="submit" id="join" name="join">Join chat room</button>
+            </div>
+            <hr />
+            {% if error %}
+            <p id="error">{{error}}</p>
+            {% endif %}
+        </form>
+
+        <p id="welcome-text"></p>
+    </div>
+
+    <script>
+        var i = 0;
+        var txt = "Join our Turing Test platform to explore AI research. The platform assigns you as either a Tester or an Experimenter. Testers find out if they're talking to a human or a bot. Experimenters prove they're human.";
+        function validateInput(input) {
+            // Regular expression to match only English letters and common punctuation
+            const regex = /^[a-zA-Z\s]*$/;
+            if (!regex.test(input.value)) {
+                input.value = input.value.replace(/[^a-zA-Z\s]/g, '');
+            }
+        }
+
+        window.onload = function () {
+            // typeWriter();
+            // Show a pop-up window with the message
+            alert(txt);
+        };
+    </script>
+</body>
+
+</html>
+{% endblock %}

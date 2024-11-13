@@ -1,0 +1,101 @@
+<!-- The chat room and all conversation details inside rooms(IMPORTANT PAGE) -->
+{% extends 'base.html' %} {% block content %}
+<div id="room-container">
+  <h1 id="home-header">AI Chat Experiment</h1>
+  <h2 id="home-subheader"></h2>
+  <div id="room-subsection">
+    <!-- <a href="/feedback" id="leave-chat-btn">End chat</a> -->
+  </div>
+  <!-- This JS code changes the title in each iframe-->
+  <script>
+    window.onload = function () {
+      var url = new URL(window.location.href);
+      var title = url.searchParams.get("title");
+      var subtitle = url.searchParams.get("subtitle");
+      document.getElementById("home-header").innerText = title;
+      document.getElementById("home-subheader").innerText = subtitle;
+    }
+  </script>
+  <div id="chat-room-widget">
+    <div id="msgs-container">
+      <ul id="messages"></ul>
+    </div>
+
+    <div id="message-box">
+      <input type="text" placeholder="Enter your message" id="message-input" name="message" autocomplete="off" />
+      <button type="submit" id="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var socketio = io();
+
+
+    socketio.on("message", function (message) {
+      createChatItem(message.message, message.sender);
+    });
+
+    function createChatItem(message, sender) {
+      var messages = document.getElementById("messages");
+
+      if (sender === "") {
+        content = `
+          <p class="member-activity">${message}</p>
+        `;
+      } else {
+        var senderIsUser = "{{user}}" === sender;
+        var content = `
+          <li class="message-item ${senderIsUser ? "self-message-item" : "peer-message-item"
+          }">
+              <p>${message}</p>
+              <small class="${senderIsUser ? "muted-text" : "muted-text-white"
+          }">${new Date().toLocaleString()}</small>
+          </li>
+      `;
+      }
+
+      messages.innerHTML += content;
+
+      const chatMessages = document.getElementById('msgs-container');
+
+      // Focus on the last message in the chat messages
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function sendMessage() {
+      var msgInput = document.getElementById("message-input");
+      if (msgInput.value === "") return;
+
+      var msg = msgInput.value;
+      socketio.emit("message", { message: msg });
+      msgInput.value = "";
+    }
+
+    socketio.on("pr", function (message) {
+      console.log("are you up?");
+    });
+
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var inputElement = document.getElementById("message-input"); // Replace with the actual id of your message input field
+      var sendButton = document.getElementById("send-btn");
+
+      inputElement.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+          sendButton.click(); // Trigger the click event of the send button
+        }
+      });
+    });
+  </script>
+
+
+  {% for message in messages %}
+  <script type="text/javascript">
+    createChatItem("{{message.message}}", "{{message.sender}}");
+  </script>
+
+
+  {% endfor %}
+</div>
+{% endblock %}

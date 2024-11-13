@@ -1,0 +1,76 @@
+<!-- This html file is for the home page of the site like: users names -->
+<iframe id="iframe1" src="/room?room_code={{room_code1}}&title=Candidate%20A" title="chat" width="49%" height="100%"
+  style="display: inline-block; float:left"></iframe>
+<iframe id="iframe2" src="" title="chat" width="50%" height="100%" style="display: inline-block; float:right"></iframe>
+
+<!-- Include the Socket.IO library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+
+<!-- Add this to your HTML -->
+<iframe id="overlay" src="/dino_game" width="99.5%" height="99.5%" frameBorder="0"
+  style="background-color: white; position: absolute; z-index: 9999; left: 0; right: 0; top: 0; bottom: 0;"></iframe>
+
+<script>
+  // Now you can use the io() function
+  var socket = io();
+
+  const iframe1 = document.getElementById("iframe1");
+  const iframe2 = document.getElementById("iframe2");
+  const overlay = document.getElementById("overlay");
+
+  iframe1.addEventListener("load", () => {
+    iframe2.src = "/room?room_code={{room_code2}}&title=Candidate%20B";
+  });
+
+
+  const listener = (...args) => {
+    console.log(args);
+    if (args == "hide_dino") {
+      overlay.setAttribute("hidden", "");
+      socket.on("stopping_conv", listener2);
+      console.log("stopping_conv listener added");
+    }
+    socket.off("overlay stopped", listener);
+
+  }
+  const listener2 = (...args) => {
+    console.log("called stopping_conv");
+    var roomCode = "{{ room_code1 }}"; // This is Jinja2 syntax for Flask.
+    sessionStorage.setItem("room_code", roomCode);
+    window.alert("Now you will proceed to fill out a survey in which you will summarize the conversation you had.");
+    location.replace("/end_chat/tester?room_code=" + roomCode);
+    socket.off("stopping_conv", listener2);
+  }
+
+  socket.once("overlay stopped", listener);
+
+
+  socket.on("force_disconnect", function () {
+    alert("The session has been ended. You will be redirected to the home page.");
+    // window.location.href = "/";
+  });
+
+  socket.on('redirect_tester', function (data) {
+    window.location.href = data.url;
+  });
+
+  socket.on('connect', function () {
+    console.log('Connected to server');
+  });
+
+  // ניתוק מהשרת
+  socket.on('disconnect', function () {
+    console.log('Disconnected from server');
+  });
+
+  // שגיאות חיבור
+  socket.on('connect_error', (error) => {
+    console.log('Connection Error:', error);
+  });
+
+  // קבלת הודעות
+  socket.on('message', function (message) {
+    console.log('Received message:', message);
+  });
+
+</script>
